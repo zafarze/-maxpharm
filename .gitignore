@@ -1,0 +1,43 @@
+# Secrets / config
+.env
+.env.*
+!.env.example
+
+# Database (содержит данные клиентов)
+*.db
+*.sqlite
+*.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.Python
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+*.log
+*.tmp
+tmp/
+temp/
+
+# Local helper scripts
+_*.py
+
+# Claude Code local settings
+.claude/
