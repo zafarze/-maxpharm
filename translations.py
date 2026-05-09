@@ -9,7 +9,7 @@ TRANSLATIONS = {
         'choose_lang': 'Выберите язык:',
         'lang_changed': '✅ Язык успешно изменен!',
         
-        'welcome': 'Добро пожаловать в систему MaxPharm!\nДля авторизации нажмите кнопку ниже, чтобы поделиться номером телефона.',
+        'welcome': 'Добро пожаловать в систему MedCompas!\nДля авторизации нажмите кнопку ниже, чтобы поделиться номером телефона.',
         'req_phone': '📱 Подтвердить номер телефона',
         'checking': 'Спасибо! Проверяем номер {phone} в базе 1С...',
         'auth_success': '✅ Вы успешно авторизованы!',
@@ -19,8 +19,8 @@ TRANSLATIONS = {
         'not_found': 'Ваши данные еще не были синхронизированы с 1С или аккаунт не привязан.',
         'error': 'Произошла ошибка.',
         
-        'about_text': '🏢 <b>MaxPharm</b> — ведущая фармацевтическая компания.\nМы заботимся о вашем здоровье!',
-        'contacts_text': '📞 <b>Наши контакты:</b>\n\nТелефон: +992 918 00 00 00\nEmail: info@maxpharm.tj\nАдрес: г. Душанбе, ул. Багаутдинова 13/5',
+        'about_text': '🏢 <b>MedCompas</b> — ведущая фармацевтическая компания.\nМы заботимся о вашем здоровье!',
+        'contacts_text': '📞 <b>Наши контакты:</b>\n\nТелефон: +992 918 00 00 00\nEmail: info@medcompas.tj\nАдрес: г. Душанбе, ул. Багаутдинова 13/5',
         'profile_text': '👤 <b>Ваш профиль:</b>\n\nФИО: {name}\nНомер телефон: {phone}\nАдрес: {address}\nКод: {code}',
         'edit_phone': '📱 Изменить номер',
         'edit_address': '📍 Изменить адрес',
@@ -32,7 +32,7 @@ TRANSLATIONS = {
         'action_cancelled': 'Действие отменено.',
 
         # --- Панель администратора ---
-        'admin_welcome': 'Добро пожаловать в панель администратора <b>MaxPharm</b>!',
+        'admin_welcome': 'Добро пожаловать в панель администратора <b>MedCompas</b>!',
         'admin_stats': '📊 Статистика',
         'admin_broadcast': '📢 Рассылка',
         'admin_doctors': '👥 Доктора',
@@ -63,7 +63,7 @@ TRANSLATIONS = {
         'admin_broadcast_cancelled': 'Рассылка отменена.',
         'admin_broadcast_send_btn': '✅ Отправить',
         'admin_broadcast_cancel_btn': '❌ Отмена',
-        'admin_broadcast_notify': '📢 <b>Сообщение от MaxPharm</b>\n\n{text}',
+        'admin_broadcast_notify': '📢 <b>Сообщение от MedCompas</b>\n\n{text}',
         'admin_broadcast_progress': '⏳ Отправлено {sent} из {total}\n✅ Доставлено: {success}\n❌ Ошибки: {failed}',
         'admin_broadcast_too_long': '❌ Сообщение слишком длинное ({length} символов).\nМаксимум 4000. Сократите и попробуйте снова.',
         'admin_broadcast_already_running': '⚠️ Рассылка уже идёт. Дождитесь завершения.',
@@ -134,7 +134,7 @@ TRANSLATIONS = {
         'choose_lang': 'Забонро интихоб кунед:',
         'lang_changed': '✅ Забон бо муваффақият иваз карда шуд!',
         
-        'welcome': 'Ба системаи MaxPharm хуш омадед!\nБарои ворид шудан, тугмаи зерро пахш кунед то рақами телефони худро фиристед.',
+        'welcome': 'Ба системаи MedCompas хуш омадед!\nБарои ворид шудан, тугмаи зерро пахш кунед то рақами телефони худро фиристед.',
         'req_phone': '📱 Тасдиқи рақами телефон',
         'checking': 'Ташаккур! Рақами {phone} дар базаи 1С тафтиш карда истодаем...',
         'auth_success': '✅ Шумо бо муваффақият ворид шудед!',
@@ -144,8 +144,8 @@ TRANSLATIONS = {
         'not_found': 'Маълумоти шумо то ҳол бо 1С ҳамоҳанг карда нашудааст ё аккаунт пайваст нашудааст.',
         'error': 'Хатогӣ рӯй дод.',
         
-        'about_text': '🏢 <b>MaxPharm</b> — ширкати пешбари фармасевтӣ.\nМо дар бораи саломатии шумо ғамхорӣ мекунем!',
-        'contacts_text': '📞 <b>Тамосҳои мо:</b>\n\nТелефон: +992 918 00 00 00\nEmail: info@maxpharm.tj\nСуроға: ш. Душанбе, кӯч. Баҳоваддинова 13/5',
+        'about_text': '🏢 <b>MedCompas</b> — ширкати пешбари фармасевтӣ.\nМо дар бораи саломатии шумо ғамхорӣ мекунем!',
+        'contacts_text': '📞 <b>Тамосҳои мо:</b>\n\nТелефон: +992 918 00 00 00\nEmail: info@medcompas.tj\nСуроға: ш. Душанбе, кӯч. Баҳоваддинова 13/5',
         'profile_text': '👤 <b>Профили шумо:</b>\n\nФИО: {name}\nНомер телефон: {phone}\nАдрес: {address}\nКод: {code}',
         'edit_phone': '📱 Иваз кардани рақам',
         'edit_address': '📍 Иваз кардани суроға',
@@ -157,7 +157,7 @@ TRANSLATIONS = {
         'action_cancelled': 'Амалиёт бекор карда шуд.',
 
         # --- Панели маъмур ---
-        'admin_welcome': 'Ба панели идоракунии <b>MaxPharm</b> хуш омадед!',
+        'admin_welcome': 'Ба панели идоракунии <b>MedCompas</b> хуш омадед!',
         'admin_stats': '📊 Омор',
         'admin_broadcast': '📢 Ирсол',
         'admin_doctors': '👥 Духтурон',
@@ -187,7 +187,7 @@ TRANSLATIONS = {
         'admin_broadcast_cancelled': 'Ирсол бекор карда шуд.',
         'admin_broadcast_send_btn': '✅ Фиристодан',
         'admin_broadcast_cancel_btn': '❌ Бекор кардан',
-        'admin_broadcast_notify': '📢 <b>Паём аз MaxPharm</b>\n\n{text}',
+        'admin_broadcast_notify': '📢 <b>Паём аз MedCompas</b>\n\n{text}',
         'admin_broadcast_progress': '⏳ Фиристода шуд {sent} аз {total}\n✅ Расид: {success}\n❌ Хатогӣ: {failed}',
         'admin_broadcast_too_long': '❌ Паём хеле дароз аст ({length} аломат).\nХадди аксар 4000. Кӯтоҳ кунед ва дубора кӯшиш кунед.',
         'admin_broadcast_already_running': '⚠️ Ирсол аллакай идома дорад. Интизор шавед.',
@@ -258,7 +258,7 @@ TRANSLATIONS = {
         'choose_lang': 'Choose language:',
         'lang_changed': '✅ Language successfully changed!',
         
-        'welcome': 'Welcome to the MaxPharm system!\nTo authorize, press the button below to share your phone number.',
+        'welcome': 'Welcome to the MedCompas system!\nTo authorize, press the button below to share your phone number.',
         'req_phone': '📱 Confirm phone number',
         'checking': 'Thank you! Checking number {phone} in the 1C database...',
         'auth_success': '✅ You have successfully authorized!',
@@ -268,8 +268,8 @@ TRANSLATIONS = {
         'not_found': 'Your data has not been synchronized with 1C yet, or the account is not linked.',
         'error': 'An error occurred.',
         
-        'about_text': '🏢 <b>MaxPharm</b> is a leading pharmaceutical company.\nWe care about your health!',
-        'contacts_text': '📞 <b>Our contacts:</b>\n\nPhone: +992 918 00 00 00\nEmail: info@maxpharm.tj\nAddress: Dushanbe city, Bagautdinova st. 13/5',
+        'about_text': '🏢 <b>MedCompas</b> is a leading pharmaceutical company.\nWe care about your health!',
+        'contacts_text': '📞 <b>Our contacts:</b>\n\nPhone: +992 918 00 00 00\nEmail: info@medcompas.tj\nAddress: Dushanbe city, Bagautdinova st. 13/5',
         'profile_text': '👤 <b>Your profile:</b>\n\nFull Name: {name}\nPhone number: {phone}\nAddress: {address}\nCode: {code}',
         'edit_phone': '📱 Edit phone number',
         'edit_address': '📍 Edit address',
@@ -281,7 +281,7 @@ TRANSLATIONS = {
         'action_cancelled': 'Action cancelled.',
 
         # --- Admin panel ---
-        'admin_welcome': 'Welcome to the <b>MaxPharm</b> admin panel!',
+        'admin_welcome': 'Welcome to the <b>MedCompas</b> admin panel!',
         'admin_stats': '📊 Statistics',
         'admin_broadcast': '📢 Broadcast',
         'admin_doctors': '👥 Doctors',
@@ -311,7 +311,7 @@ TRANSLATIONS = {
         'admin_broadcast_cancelled': 'Broadcast cancelled.',
         'admin_broadcast_send_btn': '✅ Send',
         'admin_broadcast_cancel_btn': '❌ Cancel',
-        'admin_broadcast_notify': '📢 <b>Message from MaxPharm</b>\n\n{text}',
+        'admin_broadcast_notify': '📢 <b>Message from MedCompas</b>\n\n{text}',
         'admin_broadcast_progress': '⏳ Sent {sent} of {total}\n✅ Delivered: {success}\n❌ Errors: {failed}',
         'admin_broadcast_too_long': '❌ Message is too long ({length} characters).\nMaximum is 4000. Please shorten it and try again.',
         'admin_broadcast_already_running': '⚠️ A broadcast is already in progress. Please wait.',
