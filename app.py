@@ -4,6 +4,7 @@ from scheduler import start_scheduler, fetch_data_from_1c_and_notify
 from database import get_session
 from models import Doctor
 import threading
+import time
 import config
 import datetime
 
@@ -66,11 +67,21 @@ if __name__ == '__main__':
     flask_thread = threading.Thread(target=run_flask, daemon=True)
     flask_thread.start()
 
-    # 3. Запуск Telegram Бота
+    # 3. Запуск Telegram Бота с авто-рестартом polling'а на сетевых сбоях
     print("Бот запущен...")
     try:
-        # infinity_polling сам перехватывает KeyboardInterrupt и завершается
-        bot.infinity_polling()
+        while True:
+            try:
+                bot.infinity_polling(timeout=10, long_polling_timeout=20)
+            except KeyboardInterrupt:
+                raise
+            except Exception as e:
+                print(f"[bot] polling crashed: {type(e).__name__}: {e} — restart in 5s")
+                time.sleep(5)
+                continue
+            # infinity_polling exited normally (network died, lib gave up) — restart
+            print("[bot] polling exited unexpectedly — restart in 5s")
+            time.sleep(5)
     except KeyboardInterrupt:
         pass
     finally:

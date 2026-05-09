@@ -1,7 +1,7 @@
 """
 Бизнес-логика обработки Excel-загрузки:
   1. Сохранение всех строк в `BonusEntry`.
-  2. Агрегация по клиенту (сумма по Гамме и Бете отдельно).
+  2. Агрегация по клиенту (сумма по всем группам: Гамма, Бета, Дельта, Альфа, ОТС, Офт).
   3. Апсерт `Doctor` (создаётся как PENDING-<phone>, если ещё не зарегистрирован).
   4. Накопление monthly_bonus / yearly_bonus / current_balance.
   5. Рассылка уведомлений зарегистрированным клиентам.
@@ -13,18 +13,29 @@ from database import get_session
 from models import Doctor, BonusUpload, BonusEntry
 from translations import get_text
 
-GAMMA_ALIASES = {'гамма', 'gamma', 'γ'}
-BETA_ALIASES = {'бета', 'beta', 'β'}
+# Канонический порядок отображения
+GROUP_ORDER = ['Гамма', 'Бета', 'Дельта', 'Альфа', 'ОТС', 'Офт']
+
+# (stem, canonical). Длинные stems перед короткими, чтобы избежать ложных совпадений.
+GROUP_STEMS = [
+    ('дельт', 'Дельта'), ('делт', 'Дельта'), ('delt', 'Дельта'), ('δ', 'Дельта'),
+    ('гамм',  'Гамма'),  ('gamm', 'Гамма'),  ('γ', 'Гамма'),
+    ('альф',  'Альфа'),  ('alph', 'Альфа'),  ('α', 'Альфа'),
+    ('бет',   'Бета'),   ('bet',  'Бета'),   ('β', 'Бета'),
+    ('отс',   'ОТС'),    ('otc',  'ОТС'),
+    ('офт',   'Офт'),    ('oft',  'Офт'),
+]
 
 
 def _classify_group(name):
     if not name:
         return None
     n = name.strip().lower()
-    if n in GAMMA_ALIASES:
-        return 'gamma'
-    if n in BETA_ALIASES:
-        return 'beta'
+    if not n:
+        return None
+    for stem, canonical in GROUP_STEMS:
+        if n.startswith(stem):
+            return canonical
     return None
 
 
@@ -40,7 +51,7 @@ def _aggregate(rows):
     Группирует строки по клиенту. Ключ — телефон (если есть), иначе ФИО (lower).
     """
     clients = defaultdict(lambda: {
-        'gamma': 0.0, 'beta': 0.0,
+        'groups': defaultdict(float),
         'name': None, 'phone': None, 'specialty': None,
         'unknown_groups': [],
     })
@@ -54,12 +65,10 @@ def _aggregate(rows):
         if not cl['specialty'] and r.get('specialty'):
             cl['specialty'] = r['specialty']
 
-        grp = _classify_group(r.get('group_name'))
+        canonical = _classify_group(r.get('group_name'))
         amount = float(r.get('amount') or 0.0)
-        if grp == 'gamma':
-            cl['gamma'] += amount
-        elif grp == 'beta':
-            cl['beta'] += amount
+        if canonical:
+            cl['groups'][canonical] += amount
         elif r.get('group_name'):
             cl['unknown_groups'].append(r['group_name'])
     return clients
@@ -67,11 +76,11 @@ def _aggregate(rows):
 
 def get_doctor_breakdown(session, doctor):
     """
-    Возвращает Гамма/Бета доктора из ПОСЛЕДНЕЙ загрузки Excel,
+    Возвращает разбивку по группам доктора из ПОСЛЕДНЕЙ загрузки Excel,
     в которой встречался его телефон. Накопительный баланс
     хранится отдельно в Doctor.current_balance.
     """
-    result = {'gamma': 0.0, 'beta': 0.0}
+    result = {g: 0.0 for g in GROUP_ORDER}
     if not doctor or not doctor.phone:
         return result
     last_upload_id = (
@@ -88,38 +97,35 @@ def get_doctor_breakdown(session, doctor):
         BonusEntry.upload_id == last_upload_id,
     ).all()
     for r in rows:
-        grp = _classify_group(r.group_name)
-        if grp == 'gamma':
-            result['gamma'] += float(r.amount or 0.0)
-        elif grp == 'beta':
-            result['beta'] += float(r.amount or 0.0)
+        canonical = _classify_group(r.group_name)
+        if canonical:
+            result[canonical] += float(r.amount or 0.0)
     return result
 
 
 def _mask_amount(v):
-    """1500 -> '1***', 80 -> '8*'. Маскирует все символы после первого."""
+    """Маскирует ТОЛЬКО хвостовые нули звёздочками.
+
+    1500 -> '15**'   500 -> '5**'   80 -> '8*'   100 -> '1**'
+    1055 -> '1055'   12345 -> '12345'   0 -> '**'   80.5 -> '80.5'
+    """
     s = _fmt_amount(v)
-    if len(s) <= 1:
+    if not s or s == '0':
+        return '**'
+    trailing = len(s) - len(s.rstrip('0'))
+    if trailing == 0:
         return s
-    return s[0] + '*' * (len(s) - 1)
+    return s[:-trailing] + '*' * trailing
 
 
 def format_breakdown_lines(breakdown):
-    """Строит блок строк 'Гамма 1***' / 'Бета 8*' для отображения в /status."""
-    lines = []
-    if breakdown['gamma'] > 0:
-        lines.append(f"Гамма {_mask_amount(breakdown['gamma'])}")
-    if breakdown['beta'] > 0:
-        lines.append(f"Бета {_mask_amount(breakdown['beta'])}")
+    """Строит блок строк 'Гамма 15**' / 'Бета 8*' / ... для отображения в /status."""
+    lines = [f"{g} {_mask_amount(breakdown[g])}" for g in GROUP_ORDER if breakdown.get(g, 0) > 0]
     return '\n'.join(lines) if lines else '—'
 
 
-def _build_message(lang, name, gamma, beta):
-    parts = []
-    if gamma > 0:
-        parts.append(f"Гамма {_fmt_amount(gamma)}")
-    if beta > 0:
-        parts.append(f"Бета {_fmt_amount(beta)}")
+def _build_message(lang, name, groups):
+    parts = [f"{g} {_mask_amount(groups[g])}" for g in GROUP_ORDER if groups.get(g, 0) > 0]
     summary = ', '.join(parts) if parts else '—'
     return get_text(lang or 'ru', 'bonus_notification', name=name, summary=summary)
 
@@ -197,7 +203,7 @@ def process_upload(rows, file_name, admin_id, send_message_fn):
                 if phone and not doctor.phone:
                     doctor.phone = phone
 
-            total = cl['gamma'] + cl['beta']
+            total = sum(cl['groups'].values())
             doctor.monthly_bonus = (doctor.monthly_bonus or 0.0) + total
             doctor.yearly_bonus = (doctor.yearly_bonus or 0.0) + total
             doctor.current_balance = (doctor.current_balance or 0.0) + total
@@ -205,7 +211,7 @@ def process_upload(rows, file_name, admin_id, send_message_fn):
 
             is_registered = doctor.telegram_id and not doctor.telegram_id.startswith('PENDING')
             if is_registered:
-                msg = _build_message(doctor.language, cl['name'], cl['gamma'], cl['beta'])
+                msg = _build_message(doctor.language, cl['name'], dict(cl['groups']))
                 notifications.append((doctor.telegram_id, msg))
             else:
                 pending += 1
