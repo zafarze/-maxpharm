@@ -46,12 +46,11 @@ def get_user_lang(user_id):
 def get_main_menu_keyboard(lang):
     keyboard = ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
     btn_bonus = KeyboardButton(text=get_text(lang, 'bonus'))
-    btn_about = KeyboardButton(text=get_text(lang, 'about'))
     btn_contacts = KeyboardButton(text=get_text(lang, 'contacts'))
     btn_profile = KeyboardButton(text=get_text(lang, 'profile'))
     btn_lang = KeyboardButton(text=get_text(lang, 'change_lang'))
-    
-    keyboard.add(btn_bonus, btn_about)
+
+    keyboard.add(btn_bonus)
     keyboard.add(btn_contacts, btn_profile)
     keyboard.add(btn_lang)
     return keyboard
