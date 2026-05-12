@@ -78,9 +78,12 @@ def handle_start(message):
                 get_text(lang, 'auth_success'),
                 reply_markup=get_main_menu_keyboard(lang)
             )
-            return
     finally:
         session.close()
+
+    if doctor:
+        handle_status(message)
+        return
 
     keyboard = ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
     button_phone = KeyboardButton(text=get_text(lang, 'req_phone'), request_contact=True)
