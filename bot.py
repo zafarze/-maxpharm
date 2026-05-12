@@ -2,7 +2,7 @@ import html
 import threading
 import datetime
 import telebot
-from telebot.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
+from telebot.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardRemove
 from database import get_session
 from models import Doctor, BonusAck, FeedbackMessage, Survey, SurveyQuestion, SurveyResponse, SurveyAnswer
 from translations import get_text, TRANSLATIONS
@@ -44,14 +44,8 @@ def get_user_lang(user_id):
         session.close()
 
 def get_main_menu_keyboard(lang):
-    keyboard = ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
-    btn_contacts = KeyboardButton(text=get_text(lang, 'contacts'))
-    btn_profile = KeyboardButton(text=get_text(lang, 'profile'))
-    btn_lang = KeyboardButton(text=get_text(lang, 'change_lang'))
-
-    keyboard.add(btn_contacts, btn_profile)
-    keyboard.add(btn_lang)
-    return keyboard
+    # Меню скрыто по запросу. Чтобы вернуть кнопки, верните прежнее построение клавиатуры.
+    return ReplyKeyboardRemove()
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
